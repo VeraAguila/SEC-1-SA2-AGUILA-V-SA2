@@ -1,0 +1,83 @@
+---
+title: "Summative Assessment 2"
+author: "Vera Frances A. Aguila"
+date: "2024-12-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This performs the necessary assumption checks for conducting a 2-Factor ANOVA on the Alzheimer's Mice Data. Assumptions include normality, homogeneity of variance, and independence of observations.
+
+
+```{r }
+# Load required libraries
+library(tidyverse)
+library(car)
+
+# Load the data
+data <- read.csv("Alzheimers Mice Data.csv")
+
+# View the first few rows
+head(data)
+
+```
+
+
+##Check Assumptions
+
+###Assumption 1: Normality
+The Shapiro-Wilk test is used to check normality for the Training and Memory columns. Histograms with density curves and QQ plots are also generated for visual inspection.
+
+```{r }
+# Normality check
+training_normality <- shapiro.test(data$Training)
+memory_normality <- shapiro.test(data$Memory)
+
+# Display results
+training_normality
+memory_normality
+
+# Visual inspection: histograms
+par(mfrow = c(1, 2)) # Set layout
+hist(data$Training, breaks = 10, col = "blue", main = "Training Errors", xlab = "Errors")
+lines(density(data$Training), col = "red")
+
+hist(data$Memory, breaks = 10, col = "green", main = "Memory Errors", xlab = "Errors")
+lines(density(data$Memory), col = "red")
+
+
+```
+
+### Assumption 2: Homogeneity of Variance
+Levene's test is performed to assess homogeneity of variances.
+
+
+```{r }
+# Levene's Test for Training Errors
+levene_training <- leveneTest(Training ~ as.factor(AD_Status) * as.factor(Treatment), data = data)
+levene_training
+
+# Levene's Test for Memory Errors
+levene_memory <- leveneTest(Memory ~ as.factor(AD_Status) * as.factor(Treatment), data = data)
+levene_memory
+
+
+```
+
+##Results
+
+
+```{r }
+
+
+```
+
+
+
+
+
